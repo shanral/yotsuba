@@ -1,15 +1,27 @@
 #!/usr/bin/env ruby
 
 def write_and_reassign(local_county, local_state)
+  # when the county changes:
+  # 1. write the county/number of dumps to CSV
+  # 2. reset county, state, and number of dump variables
   if local_county != @county
-    @out_file.write "#{@county},#{@state},#{@num_dump}\n" if @county != ''
-     @county = local_county
-     @state  = local_state
-     @num_dump = 0
+    write_to_file
+    reassign_variables(local_county, local_state)
   end
 
   @num_dump += 1
 end
+
+def write_to_file
+  @out_file.write "#{@county},#{@state},#{@num_dump}\n" if @county != ''
+end
+
+def reassign_variables(local_county, local_state)
+  @county = local_county
+  @state  = local_state
+  @num_dump = 0
+end
+
 
 # this text file was generated with ps2pdf from the MSW pdf original
 file = open('MSW_sites.txt')
@@ -34,8 +46,6 @@ file.each_line do |line|
     write_and_reassign(chunks[3], chunks[4])
   elsif (chunks.length == 4 || chunks.length == 3) && chunks [0] =~ /\s?\d+/
     write_and_reassign(chunks[-2], chunks[-1])
-  else
-    # Garbage
   end
 end
 
