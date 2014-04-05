@@ -22,9 +22,7 @@ def reassign_variables(local_county, local_state)
   @num_dump = 0
 end
 
-
-# this text file was generated with ps2pdf from the MSW pdf original
-file = open('MSW_sites.txt')
+# initialize output file
 @out_file = File.new('output.txt', 'w')
 @out_file.write "county,state,num_dump\n"
 
@@ -32,6 +30,8 @@ file = open('MSW_sites.txt')
 @num_dump = 0
 @county, @state = ''
 
+# this text file was generated with ps2pdf from the MSW pdf original
+file = open('MSW_sites.txt')
 file.each_line do |line|
   chunks = line.chomp.split(/\s{2,}/)
 
